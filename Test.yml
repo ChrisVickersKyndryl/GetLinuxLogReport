@@ -38,7 +38,7 @@
     
     - name: Create single file of the result
       copy:
-        dest: "/tmp/Result/{{ ansible_hostname }}.log"
+        dest: "/tmp/result/{{ ansible_hostname }}.log"
         content: |
           <tr>
             <td>{{ ansible_hostname }}</td>
@@ -56,7 +56,7 @@
      
     - name: Find all result files from the servers
       find:
-        paths: "/tmp/Result/"
+        paths: "/tmp/result/"
         patterns: "*.log"
       register: text_files
       delegate_to: localhost
@@ -64,14 +64,14 @@
     
     - name: Creating an empty file to store the single summary that willbe used in the email
       copy:
-        dest: "/tmp/Result/Summary.htm"
+        dest: "/tmp/result/Summary.htm"
         content: ""
       delegate_to: localhost
       run_once: true
     
     - name: Popullate the summary html file that will be emailed
       lineinfile:
-        dest: "/tmp/Result/Summary.htm"
+        dest: "/tmp/result/Summary.htm"
         line: "{{ lookup('file', item.path) }}"
         insertafter: EOF
       loop: "{{ text_files.files }}"
