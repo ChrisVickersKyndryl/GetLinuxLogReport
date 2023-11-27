@@ -1,0 +1,70 @@
+---
+
+# Get log size report  
+- name: Get log file data and return email
+  hosts: all
+  gather_facts: true
+  ignore_errors: yes
+  vars:
+    log_files:
+      - "/var/log/messages.log"
+      - "/var/log/messages1.log"
+      - "/var/log/example1.log"
+    
+  tasks:
+  
+    - name: Create a temp folder to store all the information
+      file:
+        path: /tmp/result
+        state: directory
+      delegate_to: localhost
+      run_once: true
+      
+    - name: Get server log into by running the bash script
+      shell: bash scripts/Get_Log_Size.sh "{{ item }}" 
+      register: shell_output
+      loop: "{{ log_files }}"
+    
+    - name: Create single file of the result
+      copy:
+        dest: "/tmp/Result/{{ ansible_hostname }}.log"
+        content: |
+          <tr>
+            <td>{{ ansible_hostname }}</td>
+            <td>{{ inventory_hostname }}</td>
+            <td>
+              {{ log_files[0] }} - {{ shell_output.outputs[0].stdout | filesizeformat(true) }}
+              <br/>{{ log_files[1] }} - {{ shell_output.outputs[1].stdout | filesizeformat(true) }}
+              <br/>{{ log_files[2] }} - {{ shell_output.outputs[2].stdout | filesizeformat(true) }}
+            </td>
+            <td>{{ shell_output.outputs[2].stdout + shell_output.outputs[2].stdout + shell_output.outputs[2].stdout }}</td>
+            <td>{{ (shell_output.outputs[2].stdout + shell_output.outputs[2].stdout + shell_output.outputs[2].stdout) | filesizeformat(true) }}</td>
+          </tr>
+      when: shell_output.stdout != "Job exceeded the timeout and will be canceled."
+      delegate_to: localhost
+     
+    - name: Find all result files from the servers
+      find:
+        paths: "/tmp/Result/"
+        patterns: "*.log"
+      register: text_files
+      delegate_to: localhost
+      run_once: true
+    
+    - name: Creating an empty file to store the single summary that willbe used in the email
+      copy:
+        dest: "/tmp/Result/Summary.htm"
+        content: ""
+      delegate_to: localhost
+      run_once: true
+    
+    - name: Popullate the summary html file that will be emailed
+      lineinfile:
+        dest: "/tmp/Result/Summary.htm"
+        line: "{{ lookup('file', item.path) }}"
+        insertafter: EOF
+      loop: "{{ text_files.files }}"
+      delegate_to: localhost
+      run_once: true
+
+      
