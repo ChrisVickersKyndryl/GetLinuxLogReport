@@ -24,6 +24,12 @@
       register: shell_output
       loop: "{{ log_files }}"
     
+    - set_fact:
+        sumList: "{{ shell_output.results | map(attribute='stdout') | list }}"
+    - debug:
+        var: sumList
+    
+     
     - name: Create single file of the result
       copy:
         dest: "/tmp/result/{{ ansible_hostname }}.log"
