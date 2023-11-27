@@ -28,6 +28,11 @@
         sumList: "{{ shell_output.results | map(attribute='stdout') | list }}"
     - debug:
         var: sumList
+
+    - set_fact:
+        sumList2: "{{ shell_output.results | map(attribute='stdout') | list | sum }}"
+    - debug:
+        var: sumList2
     
      
     - name: Create single file of the result
