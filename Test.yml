@@ -20,7 +20,7 @@
       run_once: true
 
     - name: Get server log into by running the bash script
-      shell: "lookup('template', scripts/Get_Log_Size.sh)"
+      shell: "lookup('template', 'scripts/Get_Log_Size.sh')"
       register: shell_output
       loop: "{{ log_files }}"
       
