@@ -25,11 +25,11 @@
       register: shell_output
       loop: "{{ log_files }}"
 
-    - debug:
-        msg:
-          - "{{ shell_output }}"
-          - "{{ shell_output.results }}"
-          - "{{ shell_output.results[0] }}"
+    #- debug:
+    #    msg:
+    #      - "{{ shell_output }}"
+    #      - "{{ shell_output.results }}"
+    #      - "{{ shell_output.results[0].stdout }}"
       
     #- name: Get server log into by running the bash script
     #  shell: bash scripts/Get_Log_Size.sh "{{ item }}" 
@@ -44,14 +44,14 @@
             <td>{{ ansible_hostname }}</td>
             <td>{{ inventory_hostname }}</td>
             <td>
-              {{ log_files[0] }} - {{ shell_output.outputs[0].stdout | filesizeformat(true) }}
-              <br/>{{ log_files[1] }} - {{ shell_output.outputs[1].stdout | filesizeformat(true) }}
-              <br/>{{ log_files[2] }} - {{ shell_output.outputs[2].stdout | filesizeformat(true) }}
+              {{ shell_output.results[0].stdout }} - {{ shell_output.results[0].stdout | filesizeformat(true) }}
+              <br/>{{ shell_output.results[1].stdout }} - {{ shell_output.results[1].stdout | filesizeformat(true) }}
+              <br/>{{ shell_output.results[1].stdout }} - {{ shell_output.results[1].stdout | filesizeformat(true) }}
             </td>
-            <td>{{ shell_output.outputs[2].stdout + shell_output.outputs[2].stdout + shell_output.outputs[2].stdout }}</td>
-            <td>{{ (shell_output.outputs[2].stdout + shell_output.outputs[2].stdout + shell_output.outputs[2].stdout) | filesizeformat(true) }}</td>
+            <td>{{ shell_output.results[0].stdout + shell_output.results[1].stdout }}</td>
+            <td>{{ (shell_output.results[0].stdout + shell_output.results[1].stdout) | filesizeformat(true) }}</td>
           </tr>
-      when: shell_output.stdout != "Job exceeded the timeout and will be canceled."
+      #when: shell_output.stdout != "Job exceeded the timeout and will be cancelled."
       delegate_to: localhost
      
     - name: Find all result files from the servers
