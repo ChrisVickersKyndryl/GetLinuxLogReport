@@ -18,6 +18,10 @@
         state: directory
       delegate_to: localhost
       run_once: true
+
+    - name: Get server log into by running the bash script
+      shell: pwd; ls-l; 
+      register: shell_output
       
     - name: Get server log into by running the bash script
       shell: bash scripts/Get_Log_Size.sh "{{ item }}" 
