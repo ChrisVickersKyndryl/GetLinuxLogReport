@@ -26,7 +26,10 @@
       loop: "{{ log_files }}"
 
     - debug:
-        msg: "{{ shell_output }}"
+        msg:
+          - "{{ shell_output }}"
+          - "{{ shell_output.results }}"
+          - "{{ shell_output.results[0] }}"
       
     #- name: Get server log into by running the bash script
     #  shell: bash scripts/Get_Log_Size.sh "{{ item }}" 
