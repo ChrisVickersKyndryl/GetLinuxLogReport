@@ -9,7 +9,7 @@
     log_files:
       - "/var/log/dnf.log.1"
       #- "/var/log/messages.1"
-      - "/var/log/vmware-network.log.1.log"
+      - "/var/log/vmware-network.log.log.1"
     
   tasks:
   
