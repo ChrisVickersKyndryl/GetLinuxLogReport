@@ -37,7 +37,7 @@
             </td>
             <td>{{ shell_output.results[0].stdout + shell_output.results[1].stdout }}</td>
             <td>{{ (shell_output.results[0].stdout + shell_output.results[1].stdout) | filesizeformat(true) }}</td>
-            <td>{{ shell_output.results | json_query('[].stdout') }}</td>
+            <td>{{ shell_output.results | json_query('[].stdout' | map('default', 0) ) }}</td>
           </tr>
      
     - name: Find all result files from the servers
