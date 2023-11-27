@@ -30,7 +30,7 @@
         var: sumList
 
     - set_fact:
-        sumList2: "{{ shell_output.results | map(attribute='stdout') | list | sum }}"
+        sumList2: "{{ shell_output.results | map(attribute='stdout') | map('int') | list | sum }}"
     - debug:
         var: sumList2
     
