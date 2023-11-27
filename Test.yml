@@ -7,9 +7,8 @@
   ignore_errors: yes
   vars:
     log_files:
-      - "/var/log/messages.log"
       - "/var/log/messages1.log"
-      - "/var/log/example1.log"
+      - "/var/log/auth.log.1"
     
   tasks:
   
