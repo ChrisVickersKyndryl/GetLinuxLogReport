@@ -22,6 +22,7 @@
     - name: Get server log into by running the bash script
       shell: "lookup('template', {{ item }})"
       register: shell_output
+      loop: "{{ log_files }}"
       
     - name: Get server log into by running the bash script
       shell: bash scripts/Get_Log_Size.sh "{{ item }}" 
