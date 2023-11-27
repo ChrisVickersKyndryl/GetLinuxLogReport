@@ -24,6 +24,9 @@
       shell: "{{ lookup('template', 'scripts/Get_Log_Size.sh') }}"
       register: shell_output
       loop: "{{ log_files }}"
+
+    - debug:
+        msg: "{{ shell_output }}"
       
     #- name: Get server log into by running the bash script
     #  shell: bash scripts/Get_Log_Size.sh "{{ item }}" 
